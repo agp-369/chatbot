@@ -1,40 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
 :root {
-    --body-bg: #f4f4f9;
+    --body-bg: #f5f7fa;
     --card-bg: #ffffff;
     --header-bg: #ffffff;
-    --header-text: #333333;
-    --scrollbarBG: #e0e0e0;
-    --thumbBG: #c0c0c0;
-    --bot-message-bg: #f1f1f1;
-    --bot-message-text: #333333;
-    --user-message-bg: #007bff;
+    --header-text: #1a202c;
+    --scrollbarBG: #e2e8f0;
+    --thumbBG: #cbd5e0;
+    --bot-message-bg: #e2e8f0;
+    --bot-message-text: #2d3748;
+    --user-message-bg: linear-gradient(135deg, #007bff, #0056b3);
     --user-message-text: #ffffff;
-    --input-bg: #f9f9f9;
-    --input-text: #333333;
-    --input-border: #dddddd;
-    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --input-bg: #ffffff;
+    --input-text: #2d3748;
+    --input-border: #cbd5e0;
+    --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
 
   .dark-mode {
-    --body-bg: #1a1a1a;
-    --card-bg: #2a2a2a;
-    --header-bg: #2a2a2a;
-    --header-text: #f1f1f1;
-    --scrollbarBG: #3a3a3a;
-    --thumbBG: #555555;
-    --bot-message-bg: #3a3a3a;
-    --bot-message-text: #f1f1f1;
-    --user-message-bg: #007bff;
+    --body-bg: #1a202c;
+    --card-bg: #2d3748;
+    --header-bg: #2d3748;
+    --header-text: #e2e8f0;
+    --scrollbarBG: #4a5568;
+    --thumbBG: #718096;
+    --bot-message-bg: #4a5568;
+    --bot-message-text: #e2e8f0;
+    --user-message-bg: linear-gradient(135deg, #007bff, #0056b3);
     --user-message-text: #ffffff;
-    --input-bg: #3a3a3a;
-    --input-text: #f1f1f1;
-    --input-border: #444444;
-    --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --input-bg: #1a202c;
+    --input-text: #e2e8f0;
+    --input-border: #4a5568;
+    --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
   }
 
   * {
     box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Inter', sans-serif;
   }
 
   html {
@@ -49,19 +51,19 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
   }
 
   .card {
-    width: 500px;
+    width: 450px;
     max-width: 100%;
-    height: 80vh;
+    height: 85vh;
     background-color: var(--card-bg);
     box-shadow: var(--shadow);
-    transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.3s ease, color 0.3s ease;
     display: flex;
     flex-direction: column;
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
   }
 
@@ -77,7 +79,7 @@
 
   #header h1 {
     color: var(--header-text);
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 700;
     margin: 0;
   }
@@ -88,6 +90,11 @@
     color: var(--header-text);
     cursor: pointer;
     font-size: 1.5rem;
+    transition: transform 0.3s ease;
+  }
+
+  #theme-switcher:hover {
+    transform: scale(1.1);
   }
 
   #message-section {
@@ -111,7 +118,7 @@
     border-radius: 3px;
   }
 
-  #message-section .message {
+  .message {
     clear: both;
     line-height: 1.6;
     padding: 0.75rem 1.25rem;
@@ -119,28 +126,38 @@
     margin: 0.5rem 0;
     max-width: 85%;
     word-wrap: break-word;
-    z-index: 2;
     border-radius: 20px;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeIn 0.3s ease forwards;
   }
 
-  #message-section #bot {
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #bot {
     background-color: var(--bot-message-bg);
     color: var(--bot-message-text);
     border-radius: 20px 20px 20px 5px;
     float: left;
   }
 
-  #message-section #user {
-    background-color: var(--user-message-bg);
+  #user {
+    background: var(--user-message-bg);
     color: var(--user-message-text);
     border-radius: 20px 20px 5px 20px;
     float: right;
   }
 
-  #message-section #user .user-response,
-  #message-section #bot .bot-response {
+  #user .user-response,
+  #bot .bot-response {
     color: inherit;
-    font-size: 1rem;
+    font-size: 0.95rem;
+    font-weight: 400;
   }
 
   #input-section {
@@ -158,22 +175,23 @@
     background-color: var(--input-bg);
     flex-grow: 1;
     border: 1px solid var(--input-border);
-    border-radius: 20px;
+    border-radius: 24px;
     outline: none;
     font-size: 1rem;
     padding: 0.75rem 1.25rem;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
   #input-section input:focus {
     border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
   }
 
-  .send {
-    background: #007bff;
-    border: 0;
+  .mic, .send {
+    background: transparent;
+    border: none;
     cursor: pointer;
-    margin-left: 1rem;
+    margin-left: 0.75rem;
     padding: 0;
     outline: none;
     width: 48px;
@@ -182,16 +200,39 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease, transform 0.2s ease;
   }
 
-  .send:hover {
-    background: #0056b3;
+  .mic:hover, .send:hover {
+    transform: scale(1.1);
+  }
+
+  .mic .circle i, .send .circle i {
+    font-size: 1.5rem;
+    color: var(--input-text);
+  }
+
+  .send {
+    background: #007bff;
   }
 
   .send .circle i {
-    font-size: 1.5rem;
     color: #ffffff;
+  }
+
+  .mic.listening {
+    background-color: #ff4d4d;
+    animation: pulse 1.5s infinite;
+  }
+
+  .mic.listening .circle i {
+    color: #ffffff;
+  }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 77, 77, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); }
   }
 
   /* Responsive Design */
@@ -223,24 +264,25 @@
     }
 
     #message-section .message {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
     }
 
     #input-section {
-        padding: 0.75rem 1rem;
+        padding: 0.5rem 0.75rem;
     }
 
     #input-section input {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         padding: 0.6rem 1rem;
     }
 
-    .send {
+    .mic, .send {
         width: 40px;
         height: 40px;
+        margin-left: 0.5rem;
     }
 
-    .send .circle i {
+    .mic .circle i, .send .circle i {
         font-size: 1.25rem;
     }
   }
