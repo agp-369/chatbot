@@ -97,6 +97,22 @@
     transform: scale(1.1);
   }
 
+  #network-status {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-left: 0.5rem;
+    transition: background-color 0.3s ease;
+  }
+
+  #network-status.online {
+    background-color: #28a745; /* Green */
+  }
+
+  #network-status.offline {
+    background-color: #dc3545; /* Red */
+  }
+
   #message-section {
     flex-grow: 1;
     padding: 1.5rem;

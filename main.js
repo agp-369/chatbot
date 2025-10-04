@@ -18,12 +18,33 @@ app.whenReady().then(() => {
   createWindow();
 
   ipcMain.on('open-app', (event, appName) => {
-    exec(`start ${appName}`, (error, stdout, stderr) => {
+    exec(`start ${appName}`, (error) => {
       if (error) {
         console.error(`exec error: ${error}`);
-        return;
       }
     });
+  });
+
+  ipcMain.on('set-volume', (event, volume) => {
+    // This is a simplified example. A more robust solution would use a dedicated library.
+    // For now, we'll just open the volume mixer on Windows.
+    if (process.platform === 'win32') {
+      exec('sndvol.exe', (error) => {
+        if (error) {
+          console.error(`exec error: ${error}`);
+        }
+      });
+    }
+  });
+
+  ipcMain.on('open-settings', (event, setting) => {
+    if (process.platform === 'win32') {
+      exec(`start ms-settings:${setting}`, (error) => {
+        if (error) {
+          console.error(`exec error: ${error}`);
+        }
+      });
+    }
   });
 
   app.on('activate', function () {
