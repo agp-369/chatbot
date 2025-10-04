@@ -13,9 +13,15 @@
   <div class="card">
     <div id="header">
       <h1>Chatbot!</h1>
+      <button id="theme-switcher">
+        <i class="zmdi zmdi-brightness-5"></i>
+      </button>
     </div>
     <div id="message-section">
-      <div class="message" id="bot"><span id="bot-response">Hello.. I'm listening! Go on..</span></div>
+      <div class="message" id="bot"><span class="bot-response">Hello.. I'm listening! Go on..</span></div>
+      <div class="message" id="typing-indicator" style="display: none;">
+        <span class="bot-response">Typing...</span>
+      </div>
     </div>
     <div id="input-section">
       <input id="input" type="text" placeholder="Type a message" autocomplete="off" autofocus="autofocus">
