@@ -264,11 +264,8 @@ function output(input) {
           }, 1000);
       }
     } else {
-      let product = alternative[Math.floor(Math.random() * alternative.length)];
-      setTimeout(() => {
-          typingIndicator.style.display = "none";
-          addBotMessage(product);
-      }, 1000);
+      // If no specific command is found, use Groq API
+      getGroqResponse(input);
     }
   }
 
@@ -404,6 +401,32 @@ async function getIdea() {
         console.error("Error fetching idea:", error);
         typingIndicator.style.display = "none";
         addBotMessage("Sorry, I'm having trouble brainstorming at the moment.");
+    }
+}
+
+async function getGroqResponse(prompt) {
+    const typingIndicator = document.getElementById("typing-indicator");
+
+    try {
+        const response = await fetch('http://localhost:3000/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ prompt }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to get response from the server.');
+        }
+
+        const data = await response.json();
+        typingIndicator.style.display = "none";
+        addBotMessage(data.content);
+    } catch (error) {
+        console.error("Error fetching Groq response:", error);
+        typingIndicator.style.display = "none";
+        addBotMessage("Sorry, I'm having trouble connecting to my brain right now.");
     }
 }
 
