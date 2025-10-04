@@ -11,6 +11,10 @@ if (speechSynthesis.onvoiceschanged !== undefined) {
   speechSynthesis.onvoiceschanged = populateVoiceList;
 }
 
+// --- Data Storage ---
+let todos = JSON.parse(localStorage.getItem("todos")) || [];
+let notes = JSON.parse(localStorage.getItem("notes")) || [];
+
 // User object to store context
 const user = {
   name: null,
@@ -22,6 +26,10 @@ const responses = {
         "triggers": ["tell me a joke", "joke", "say something funny"],
         "isApi": true
       },
+    "idea": {
+        "triggers": ["give me an idea", "i'm bored", "what should i do"],
+        "isApi": true
+    },
     "greetings": {
         "triggers": ["hi", "hey", "hello"],
         "replies": ["Hello, {name}!", "Hi {name}!", "Hey {name}!", "Hi there, {name}!"]
@@ -77,6 +85,10 @@ const responses = {
       "help": {
         "triggers": ["help me", "tell me a story"],
         "replies": ["What about?", "Once upon a time..."]
+      },
+      "word_association": {
+        "triggers": ["word association"],
+        "replies": ["Sky! Your turn."]
       },
       "acknowledgement": {
         "triggers": ["ah", "ok", "okay", "nice", "welcome"],
@@ -188,6 +200,12 @@ function output(input) {
 
   let text = input.toLowerCase().replace(/[^\w\s]/gi, "").trim();
 
+  // --- Productivity Features ---
+  if (handleProductivityCommands(input)) {
+    typingIndicator.style.display = "none";
+    return;
+  }
+
   // Check for name
   if (text.startsWith("my name is")) {
     user.name = text.substring(11).trim();
@@ -209,6 +227,8 @@ function output(input) {
     if (replyCategory.isApi) {
       if(replyCategoryKey === 'joke'){
         getJoke();
+      } else if (replyCategoryKey === 'idea') {
+        getIdea();
       }
     } else {
         let replies = replyCategory.replies;
@@ -228,9 +248,93 @@ function output(input) {
   }
 }
 
+function handleProductivityCommands(input) {
+    const text = input.toLowerCase();
+    let match;
+
+    // To-Do List
+    match = text.match(/^add to-do ['"](.+)['"]$/) || text.match(/^add to-do (.+)$/);
+    if (match) {
+        addTodo(match[1]);
+        return true;
+    }
+    if (text === "show to-do list" || text === "show todos") {
+        showTodos();
+        return true;
+    }
+    match = text.match(/^delete to-do (\d+)$/);
+    if (match) {
+        const index = parseInt(match[1], 10) - 1;
+        deleteTodo(index);
+        return true;
+    }
+
+    // Note-Taking
+    match = text.match(/^add note ['"](.+)['"]$/) || text.match(/^add note (.+)$/);
+    if (match) {
+        addNote(match[1]);
+        return true;
+    }
+    if (text === "show notes") {
+        showNotes();
+        return true;
+    }
+
+    return false;
+}
+
+// --- To-Do List Functions ---
+function addTodo(task) {
+    todos.push(task);
+    localStorage.setItem("todos", JSON.stringify(todos));
+    addBotMessage(`Added "${task}" to your to-do list.`);
+}
+
+function showTodos() {
+    if (todos.length === 0) {
+        addBotMessage("Your to-do list is empty.");
+        return;
+    }
+    let todoList = "Here's your to-do list:<br><ul>";
+    todos.forEach((task, index) => {
+        todoList += `<li>${index + 1}. ${task}</li>`;
+    });
+    todoList += "</ul>";
+    addBotMessage(todoList);
+}
+
+function deleteTodo(index) {
+    if (isNaN(index) || index < 0 || index >= todos.length) {
+        addBotMessage("Invalid to-do number.");
+        return;
+    }
+    const deletedTask = todos.splice(index, 1);
+    localStorage.setItem("todos", JSON.stringify(todos));
+    addBotMessage(`Deleted "${deletedTask}" from your to-do list.`);
+}
+
+// --- Note-Taking Functions ---
+function addNote(note) {
+    notes.push(note);
+    localStorage.setItem("notes", JSON.stringify(notes));
+    addBotMessage("Note added.");
+}
+
+function showNotes() {
+    if (notes.length === 0) {
+        addBotMessage("You have no notes.");
+        return;
+    }
+    let noteList = "Here are your notes:<br><ul>";
+    notes.forEach((note, index) => {
+        noteList += `<li>- ${note}</li>`;
+    });
+    noteList += "</ul>";
+    addBotMessage(noteList);
+}
+
 async function getJoke() {
     const typingIndicator = document.getElementById("typing-indicator");
-    const mainDiv = document.getElementById("message-section");
 
     try {
       const response = await fetch("https://v2.jokeapi.dev/joke/Any?safe-mode");
@@ -257,6 +361,27 @@ async function getJoke() {
       addBotMessage("Sorry, I'm having trouble connecting to the joke factory.");
     }
   }
+
+async function getIdea() {
+    const typingIndicator = document.getElementById("typing-indicator");
+
+    try {
+        const response = await fetch("https://bored.api.lewagon.com/api/activity");
+        const data = await response.json();
+
+        typingIndicator.style.display = "none";
+
+        if (data.activity) {
+            addBotMessage(`How about this: ${data.activity}?`);
+        } else {
+            addBotMessage("I'm out of ideas right now. Try again later!");
+        }
+    } catch (error) {
+        console.error("Error fetching idea:", error);
+        typingIndicator.style.display = "none";
+        addBotMessage("Sorry, I'm having trouble brainstorming at the moment.");
+    }
+}
 
 function addBotMessage(product) {
   const mainDiv = document.getElementById("message-section");
