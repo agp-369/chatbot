@@ -197,6 +197,22 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const micBtn = document.getElementById("mic-btn");
+  const networkStatus = document.getElementById("network-status");
+
+  const updateNetworkStatus = () => {
+    if (navigator.onLine) {
+      networkStatus.classList.remove("offline");
+      networkStatus.classList.add("online");
+    } else {
+      networkStatus.classList.remove("online");
+      networkStatus.classList.add("offline");
+    }
+  };
+
+  window.addEventListener('online', updateNetworkStatus);
+  window.addEventListener('offline', updateNetworkStatus);
+  updateNetworkStatus();
+
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   let recognition;
 
@@ -320,6 +336,33 @@ function handleSystemCommands(input) {
         addBotMessage(`Trying to open ${appName}...`);
         return true;
     }
+
+    // Volume control
+    if (text.includes("mute volume")) {
+        window.electronAPI.send('set-volume', 0);
+        addBotMessage("Muting volume.");
+        return true;
+    }
+    if (text.includes("unmute volume") || text.includes("max volume")) {
+        window.electronAPI.send('set-volume', 100);
+        addBotMessage("Setting volume to max.");
+        return true;
+    }
+    match = text.match(/set volume to (\d+)/);
+    if (match) {
+        const volume = parseInt(match[1], 10);
+        window.electronAPI.send('set-volume', volume);
+        addBotMessage(`Setting volume to ${volume}%.`);
+        return true;
+    }
+
+    // System settings
+    if (text.includes("open display settings")) {
+        window.electronAPI.send('open-settings', 'display');
+        addBotMessage("Opening display settings...");
+        return true;
+    }
+
     return false;
 }
 
@@ -460,6 +503,20 @@ async function getIdea() {
 
 async function getGroqResponse(prompt) {
     const typingIndicator = document.getElementById("typing-indicator");
+    typingIndicator.style.display = "none";
+
+    // Create a new message bubble for the streaming response
+    const mainDiv = document.getElementById("message-section");
+    let botDiv = document.createElement("div");
+    botDiv.id = "bot";
+    botDiv.classList.add("message");
+    let botSpan = document.createElement("span");
+    botSpan.classList.add("bot-response");
+    botDiv.appendChild(botSpan);
+    mainDiv.appendChild(botDiv);
+    mainDiv.scrollTop = mainDiv.scrollHeight;
+
+    let fullResponse = "";
 
     try {
         const response = await fetch('http://localhost:3000/api/chat', {
@@ -474,13 +531,30 @@ async function getGroqResponse(prompt) {
             throw new Error('Failed to get response from the server.');
         }
 
-        const data = await response.json();
-        typingIndicator.style.display = "none";
-        addBotMessage(data.content);
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) {
+                break;
+            }
+            // The server sends data in the format: data: "..."
+            const chunk = decoder.decode(value);
+            const lines = chunk.split('\n');
+            for (const line of lines) {
+                if (line.startsWith('data: ')) {
+                    const data = JSON.parse(line.substring(6));
+                    fullResponse += data;
+                    botSpan.innerHTML = fullResponse.replace(/\n/g, '<br>'); // Render newlines
+                    mainDiv.scrollTop = mainDiv.scrollHeight;
+                }
+            }
+        }
+        voiceControl(fullResponse);
     } catch (error) {
         console.error("Error fetching Groq response:", error);
-        typingIndicator.style.display = "none";
-        addBotMessage("Sorry, I'm having trouble connecting to my brain right now.");
+        botSpan.innerHTML = "Sorry, I'm having trouble connecting to my brain right now.";
     }
 }
 

@@ -22,12 +22,23 @@ app.post('/api/chat', async (req, res) => {
             return res.status(400).json({ error: 'Prompt is required' });
         }
 
-        const response = await openai.chat.completions.create({
+        const stream = await openai.chat.completions.create({
             model: 'llama-3.1-8b-instant',
             messages: [{ role: 'user', content: prompt }],
+            stream: true,
         });
 
-        res.json(response.choices[0].message);
+        res.setHeader('Content-Type', 'text/event-stream');
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Connection', 'keep-alive');
+
+        for await (const chunk of stream) {
+            if (chunk.choices[0]?.delta?.content) {
+                res.write(`data: ${JSON.stringify(chunk.choices[0].delta.content)}\n\n`);
+            }
+        }
+
+        res.end();
     } catch (error) {
         console.error('Error calling Groq API:', error);
         res.status(500).json({ error: 'Failed to fetch response from Groq API' });
