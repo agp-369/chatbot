@@ -215,8 +215,8 @@ function output(input) {
 
     let text = input.toLowerCase().replace(/[^\w\s]/gi, "").trim();
 
-    // --- Productivity Features ---
-    if (handleProductivityCommands(input)) {
+  // --- System and Productivity Features ---
+  if (handleSystemCommands(input) || handleProductivityCommands(input)) {
       typingIndicator.style.display = "none";
       return;
     }
@@ -268,6 +268,21 @@ function output(input) {
       getGroqResponse(input);
     }
   }
+
+function handleSystemCommands(input) {
+    const text = input.toLowerCase();
+    let match;
+
+    // Open applications or files
+    match = text.match(/^open (.+)$/);
+    if (match) {
+        const appName = match[1];
+        window.electronAPI.send('open-app', appName);
+        addBotMessage(`Trying to open ${appName}...`);
+        return true;
+    }
+    return false;
+}
 
 function handleProductivityCommands(input) {
     const text = input.toLowerCase();
