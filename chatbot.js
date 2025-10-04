@@ -195,6 +195,45 @@ document.addEventListener("DOMContentLoaded", () => {
   themeSwitcher.addEventListener("click", () => {
     document.body.classList.toggle("dark-mode");
   });
+
+  const micBtn = document.getElementById("mic-btn");
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let recognition;
+
+  if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    micBtn.addEventListener("click", () => {
+      recognition.start();
+    });
+
+    recognition.addEventListener("speechstart", () => {
+      micBtn.classList.add("listening");
+    });
+
+    recognition.addEventListener("speechend", () => {
+      micBtn.classList.remove("listening");
+    });
+
+    recognition.addEventListener("result", (event) => {
+      const transcript = event.results[0][0].transcript;
+      const inputField = document.getElementById("input");
+      inputField.value = transcript;
+      sendMessage();
+    });
+
+    recognition.addEventListener("error", (event) => {
+      micBtn.classList.remove("listening");
+      console.error("Speech recognition error", event.error);
+    });
+  } else {
+    micBtn.style.display = "none";
+    console.log("Speech recognition not supported in this browser.");
+  }
 });
 
 function output(input) {
