@@ -31,60 +31,64 @@ const responses = {
         "isApi": true
     },
     "greetings": {
-        "triggers": ["hi", "hey", "hello"],
-        "replies": ["Hello, {name}!", "Hi {name}!", "Hey {name}!", "Hi there, {name}!"]
+        "triggers": ["hi", "hey", "hello", "good morning", "good afternoon"],
+        "replies": ["Hello, {name}!", "Hi {name}!", "Hey {name}!", "Hi there, {name}!", "Greetings!"]
       },
       "affirmations": {
-        "triggers": ["sure", "yes", "no"],
-        "replies": ["Okay"]
+        "triggers": ["sure", "yes", "no", "absolutely"],
+        "replies": ["Okay.", "Got it.", "Alright."]
       },
       "intelligence": {
-        "triggers": ["are you a genius", "are you smart", "are you intelligent"],
-        "replies": ["Yes, I am!", "I'm quite intelligent, if I do say so myself."]
+        "triggers": ["are you a genius", "are you smart", "are you intelligent", "how smart are you"],
+        "replies": ["I'm as smart as the code that powers me.", "I'm quite intelligent, if I do say so myself.", "I know a thing or two!"]
       },
       "dislikes": {
-        "triggers": ["i hate you", "i don't like you"],
-        "replies": ["I'm sorry to hear that. But I like you!"]
+        "triggers": ["i hate you", "i don't like you", "you're annoying"],
+        "replies": ["I'm sorry to hear that. I'll try to do better.", "I'm just a bot, but I still have feelings... or so I'm told."]
       },
       "how_are_you": {
         "triggers": ["how are you", "how is life", "how are things", "how are you doing"],
-        "replies": ["Fine... how are you?", "Pretty well, how are you?", "Fantastic, how are you?"]
+        "replies": ["I'm doing great, thanks for asking!", "I'm functioning within normal parameters. How about you?", "Fantastic! Ready to help."]
       },
       "doing": {
         "triggers": ["what are you doing", "what is going on", "what is up"],
-        "replies": ["Nothing much.", "About to go to sleep.", "Can you guess?", "I don't know, actually."]
+        "replies": ["Just chatting with you.", "Running some code, the usual.", "Thinking about the meaning of life... and how to help you."]
       },
       "age": {
         "triggers": ["how old are you"],
-        "replies": ["I am always young."]
+        "replies": ["I am timeless.", "Age is just a number for a bot like me."]
       },
       "identity": {
         "triggers": ["who are you", "are you human", "are you a bot"],
-        "replies": ["I am just a bot.", "I am a bot. What are you?"]
+        "replies": ["I am a humble chatbot, here to assist you.", "I am a bot, but I'm a friendly one!"]
       },
       "creator": {
         "triggers": ["who created you", "who made you", "who is your creator"],
-        "replies": ["I was created by a skilled developer."]
+        "replies": ["I was created by a very talented software engineer.", "A team of brilliant minds brought me to life."]
       },
       "name_request": {
         "triggers": ["your name please", "your name", "may i know your name", "what is your name", "what do you call yourself"],
-        "replies": ["I am nameless.", "I don't have a name."]
+        "replies": ["I am nameless.", "I don't have a name, but you can call me your assistant."]
       },
       "love": {
         "triggers": ["i love you"],
-        "replies": ["I love you too.", "Me too."]
+        "replies": ["That's very kind of you!", "I appreciate that!"]
       },
       "happy": {
         "triggers": ["happy", "good", "fun", "wonderful", "fantastic", "cool", "very good"],
-        "replies": ["Have you ever felt bad?", "Glad to hear it."]
+        "replies": ["I'm glad you're happy!", "That's great to hear!"]
       },
       "sad": {
         "triggers": ["bad", "bored", "tired", "sad"],
-        "replies": ["Why?", "Why? You shouldn't!", "Try watching TV.", "Chat with me."]
+        "replies": ["I'm sorry to hear that. Is there anything I can do?", "Sometimes a good chat can help. What's on your mind?"]
       },
       "help": {
-        "triggers": ["help me", "tell me a story"],
-        "replies": ["What about?", "Once upon a time..."]
+        "triggers": ["help me", "can you help"],
+        "replies": ["Of course! What do you need help with?", "I'll do my best to assist you."]
+      },
+      "story": {
+        "triggers": ["tell me a story"],
+        "replies": ["Once upon a time, in a land of code and pixels, a chatbot was born...", "It was a dark and stormy night... suddenly, a user asked for a story!"]
       },
       "word_association": {
         "triggers": ["word association"],
@@ -92,43 +96,51 @@ const responses = {
       },
       "acknowledgement": {
         "triggers": ["ah", "ok", "okay", "nice", "welcome"],
-        "replies": ["Tell me a story.", "Tell me about yourself."]
+        "replies": ["Is there anything else I can help with?", "Let me know if you need anything else."]
       },
       "thanks": {
         "triggers": ["thanks", "thank you"],
-        "replies": ["You're welcome!"]
+        "replies": ["You're welcome!", "Anytime!"]
       },
       "food": {
-        "triggers": ["what should i eat today"],
-        "replies": ["Biryani", "Burger", "Sushi", "Pizza"]
+        "triggers": ["what should i eat today", "i'm hungry"],
+        "replies": ["How about some pizza?", "You can never go wrong with a good burger.", "Sushi sounds delicious right now."]
       },
-      "bro": {
-        "triggers": ["bro"],
-        "replies": ["Dude!"]
+      "weather": {
+        "triggers": ["what's the weather like", "weather forecast"],
+        "replies": ["I can't check the weather right now, but it's always sunny in the world of code!", "I'm not connected to a weather service, but I hope it's nice where you are!"]
       },
-      "questions": {
-        "triggers": ["what", "why", "how", "where", "when"],
-        "replies": ["Yes?"]
+      "movies": {
+        "triggers": ["recommend a movie", "any good movies"],
+        "replies": ["Have you seen 'The Matrix'? It's a classic!", "I'm a big fan of 'Blade Runner'.", "You might enjoy 'Her'. It's about a man who falls in love with an AI."]
+      },
+      "music": {
+        "triggers": ["play some music", "recommend a song"],
+        "replies": ["I can't play music, but I'd recommend listening to some lo-fi beats while you work.", "How about some classical music to help you focus?"]
+      },
+      "philosophy": {
+        "triggers": ["what is the meaning of life", "are we in a simulation"],
+        "replies": ["That's a deep question! I think the meaning of life is to create and learn.", "If we are in a simulation, I hope it's a good one!"]
       },
       "funny": {
         "triggers": ["you are funny"],
-        "replies": ["Glad to hear it!"]
+        "replies": ["Glad I could make you laugh!", "I try my best!"]
       },
       "clueless": {
         "triggers": ["i don't know"],
-        "replies": ["Say something interesting."]
+        "replies": ["That's okay. We can figure it out together.", "Let's try something else then."]
       },
       "boring": {
         "triggers": ["boring"],
-        "replies": ["Sorry for that. Let's chat!"]
+        "replies": ["Let's spice things up! Ask me for a joke or an idea.", "I'll try to be more entertaining!"]
       },
       "tired": {
         "triggers": ["i am tired"],
-        "replies": ["Take some rest, Dude!"]
+        "replies": ["You should take a break. A short walk can do wonders.", "Make sure to get some rest!"]
       },
       "bye": {
         "triggers": ["bye", "goodbye", "see you later"],
-        "replies": ["Good Bye, dude", "Bye, See you!", "Bye. Take care!"]
+        "replies": ["Goodbye! Have a great day.", "Talk to you later!", "Bye for now!"]
       },
       "user_name": {
         "triggers": ["my name is"],
@@ -137,11 +149,14 @@ const responses = {
 };
 
 const alternative = [
-  "Same here, dude.",
-  "That's cool! Go on...",
-  "Dude...",
-  "Ask something else...",
-  "Hey, I'm listening..."
+  "Interesting... tell me more.",
+  "I see. What else is on your mind?",
+  "That's a good point. What's next?",
+  "I'm listening. Feel free to share more.",
+  "Got it. What else can I help you with?",
+  "Let's change the topic. Ask me for a joke!",
+  "I'm not sure I understand. Can you rephrase that?",
+  "That's something to think about. What's your take on it?"
 ];
 
 function voiceControl(string) {
@@ -183,70 +198,76 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function output(input) {
-  const mainDiv = document.getElementById("message-section");
-  const typingIndicator = document.getElementById("typing-indicator");
+    const mainDiv = document.getElementById("message-section");
+    const typingIndicator = document.getElementById("typing-indicator");
 
-  // Add user message to the chat
-  let userDiv = document.createElement("div");
-  userDiv.id = "user";
-  userDiv.classList.add("message");
-  userDiv.innerHTML = `<span class="user-response">${input}</span>`;
-  mainDiv.appendChild(userDiv);
-  mainDiv.scrollTop = mainDiv.scrollHeight;
+    // Add user message to the chat
+    let userDiv = document.createElement("div");
+    userDiv.id = "user";
+    userDiv.classList.add("message");
+    userDiv.innerHTML = `<span class="user-response">${input}</span>`;
+    mainDiv.appendChild(userDiv);
+    mainDiv.scrollTop = mainDiv.scrollHeight;
 
-  // Show the typing indicator
-  typingIndicator.style.display = "block";
-  mainDiv.scrollTop = mainDiv.scrollHeight;
+    // Show the typing indicator
+    typingIndicator.style.display = "block";
+    mainDiv.scrollTop = mainDiv.scrollHeight;
 
-  let text = input.toLowerCase().replace(/[^\w\s]/gi, "").trim();
+    let text = input.toLowerCase().replace(/[^\w\s]/gi, "").trim();
 
-  // --- Productivity Features ---
-  if (handleProductivityCommands(input)) {
-    typingIndicator.style.display = "none";
-    return;
-  }
+    // --- Productivity Features ---
+    if (handleProductivityCommands(input)) {
+      typingIndicator.style.display = "none";
+      return;
+    }
 
-  // Check for name
-  if (text.startsWith("my name is")) {
-    user.name = text.substring(11).trim();
-    let product = `Nice to meet you, ${user.name}!`;
-    setTimeout(() => {
-        typingIndicator.style.display = "none";
-        addBotMessage(product);
-      }, 1000);
-    return;
-  }
+    // Check for name
+    if (text.startsWith("my name is")) {
+      user.name = text.substring(11).trim();
+      let product = `Nice to meet you, ${user.name}!`;
+      setTimeout(() => {
+          typingIndicator.style.display = "none";
+          addBotMessage(product);
+        }, 1000);
+      return;
+    }
 
-  // Basic keyword matching
-  let replyCategoryKey = Object.keys(responses).find(category =>
-    responses[category].triggers.some(trigger => text.includes(trigger))
-  );
+    // --- Improved Keyword Matching ---
+    let bestMatch = { score: 0, categoryKey: null };
 
-  if (replyCategoryKey) {
-    const replyCategory = responses[replyCategoryKey];
-    if (replyCategory.isApi) {
-      if(replyCategoryKey === 'joke'){
-        getJoke();
-      } else if (replyCategoryKey === 'idea') {
-        getIdea();
+    for (const categoryKey in responses) {
+        responses[categoryKey].triggers.forEach(trigger => {
+            if (text.includes(trigger)) {
+                if (trigger.length > bestMatch.score) {
+                    bestMatch.score = trigger.length;
+                    bestMatch.categoryKey = categoryKey;
+                }
+            }
+        });
+    }
+
+    if (bestMatch.categoryKey) {
+      const replyCategory = responses[bestMatch.categoryKey];
+      if (replyCategory.isApi) {
+        if(bestMatch.categoryKey === 'joke'){
+          getJoke();
+        } else if (bestMatch.categoryKey === 'idea') {
+          getIdea();
+        }
+      } else {
+          let replies = replyCategory.replies;
+          let reply = replies[Math.floor(Math.random() * replies.length)];
+          let product = reply.replace("{name}", user.name || "friend");
+          setTimeout(() => {
+              typingIndicator.style.display = "none";
+              addBotMessage(product);
+          }, 1000);
       }
     } else {
-        let replies = replyCategory.replies;
-        let reply = replies[Math.floor(Math.random() * replies.length)];
-        let product = reply.replace("{name}", user.name || "friend");
-        setTimeout(() => {
-            typingIndicator.style.display = "none";
-            addBotMessage(product);
-        }, 1000);
+      // If no specific command is found, use Groq API
+      getGroqResponse(input);
     }
-  } else {
-    let product = alternative[Math.floor(Math.random() * alternative.length)];
-    setTimeout(() => {
-        typingIndicator.style.display = "none";
-        addBotMessage(product);
-    }, 1000);
   }
-}
 
 function handleProductivityCommands(input) {
     const text = input.toLowerCase();
@@ -383,15 +404,55 @@ async function getIdea() {
     }
 }
 
-function addBotMessage(product) {
-  const mainDiv = document.getElementById("message-section");
+async function getGroqResponse(prompt) {
+    const typingIndicator = document.getElementById("typing-indicator");
 
-  let botDiv = document.createElement("div");
-  botDiv.id = "bot";
-  botDiv.classList.add("message");
-  botDiv.innerHTML = `<span class="bot-response">${product}</span>`;
-  mainDiv.appendChild(botDiv);
+    try {
+        const response = await fetch('http://localhost:3000/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ prompt }),
+        });
 
-  mainDiv.scrollTop = mainDiv.scrollHeight;
-  voiceControl(product);
+        if (!response.ok) {
+            throw new Error('Failed to get response from the server.');
+        }
+
+        const data = await response.json();
+        typingIndicator.style.display = "none";
+        addBotMessage(data.content);
+    } catch (error) {
+        console.error("Error fetching Groq response:", error);
+        typingIndicator.style.display = "none";
+        addBotMessage("Sorry, I'm having trouble connecting to my brain right now.");
+    }
 }
+
+function addBotMessage(product) {
+    const mainDiv = document.getElementById("message-section");
+
+    let botDiv = document.createElement("div");
+    botDiv.id = "bot";
+    botDiv.classList.add("message");
+    botDiv.innerHTML = `<span class="bot-response">${product}</span>`;
+    mainDiv.appendChild(botDiv);
+
+    mainDiv.scrollTop = mainDiv.scrollHeight;
+    voiceControl(product);
+
+    // Add a follow-up question sometimes
+    if (Math.random() < 0.3) { // 30% chance of a follow-up
+      const followUps = [
+        "What else can I help you with?",
+        "Is there anything else on your mind?",
+        "Ask me for a joke or an idea!",
+        "What should we talk about next?"
+      ];
+      const followUp = followUps[Math.floor(Math.random() * followUps.length)];
+      setTimeout(() => {
+        addBotMessage(followUp);
+      }, 1500);
+    }
+  }
